@@ -20,6 +20,9 @@ from pyramid.security import Authenticated
 from pyramid.security import Everyone
 from repoze.who.config import make_api_factory_with_config
 
+import logging;
+
+log = logging.getLogger(__name__)
 
 def _null_callback(identity, request):
     return ()
@@ -28,6 +31,7 @@ class WhoV2AuthenticationPolicy(object):
     implements(IAuthenticationPolicy)
 
     def __init__(self, config_file, identifier_id, callback=_null_callback):
+        log.debug("PYRAMID_WHO_WHOV2 INIT START")
         config_file = self._config_file = os.path.abspath(
                                           os.path.normpath(
                                           os.path.expandvars(
@@ -67,6 +71,7 @@ class WhoV2AuthenticationPolicy(object):
     def remember(self, request, principal, **kw):
         """ See IAuthenticationPolicy.
         """
+        log.debug("REMEMBER START")
         api = self._getAPI(request)
         identity = {'repoze.who.userid': principal,
                     'identifier': api.name_registry[self._identifier_id],
@@ -84,6 +89,7 @@ class WhoV2AuthenticationPolicy(object):
         return self._api_factory(request.environ)
 
     def _get_identity(self, request):
+        log.debug("GET IDENTITY START")
         identity = request.environ.get('repoze.who.identity')
         if identity is None:
             api = self._getAPI(request)
