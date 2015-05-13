@@ -71,7 +71,7 @@ class WhoV2AuthenticationPolicy(object):
     def remember(self, request, principal, **kw):
         """ See IAuthenticationPolicy.
         """
-        log.debug("REMEMBER START")
+        log.debug("PCROWNOV - REMEMBER START")
         api = self._getAPI(request)
         identity = {'repoze.who.userid': principal,
                     'identifier': api.name_registry[self._identifier_id],
